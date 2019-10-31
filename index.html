@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>To Do List</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+    <link href="https://fonts.googleapis.com/css?family=Jomolhari&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="todo-wrapper">
+        <header>My to-do List</header>
+        <div class="todo-entry">
+            <input type="text" id="todo-input" placeholder="Enter a task" autofocus/>
+            <button class="add" onclick="addListItem()">Add</button>
+        </div>
+        <div class="todo-results"></div>
+        <div class="empty-block">
+            <div class="empty-list">
+                <img src="empty.svg" alt="empty" class="empty">
+                <p>Don't be a lazy cat...!</p>
+            </div>
+        </div>
+        
+    </div>
+<footer>
+    <p class="copyright">&copy; Copyright Prateek Priyesh 2019</p>
+</footer>
+
+
+    <script>
+        
+        function addListItem() {
+            let task = document.querySelector('#todo-input').value;
+            if(task.length > 0) {
+                // remove placeholder
+                document.querySelector('.empty-block').style.display = 'none';
+                let todoResults = document.querySelector('.todo-results');
+                
+                let listItem = document.createElement('div');
+                listItem.classList.add('list-item');
+                listItem.addEventListener('click', function(){
+                    markAsComplete(event);
+                }, false)
+                
+                
+                let listItemText = document.createElement('span');
+                listItemText.classList.add('list-item-text');
+                listItemText.innerHTML = task;
+                
+                let closeIcon = document.createElement('img');
+                closeIcon.src= 'close.svg';
+                closeIcon.classList.add('close');
+                closeIcon.addEventListener('click', function(){
+                    removeListItem(listItem)
+                }, false);
+                
+                listItem.appendChild(listItemText)
+                listItem.appendChild(closeIcon)
+                
+                todoResults.appendChild(listItem);
+                
+                // clear the input
+                document.querySelector('#todo-input').value = '';
+            }
+            
+        }
+        
+        function removeListItem(element) {
+            element.parentElement.removeChild(element)
+            if(document.querySelector('.todo-results').childElementCount == 0) {
+                document.querySelector('.empty-block').style.display = 'block';
+            }
+        }
+        
+        function markAsComplete(event) {
+            event.target.classList.add('completed');
+        }
+        
+        document.querySelector('#todo-input').addEventListener('keyup', (event) => {
+            if(event.keyCode === 13) {
+                addListItem()
+            }
+        })
+    </script>
+</body>
+</html>
